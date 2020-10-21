@@ -36,10 +36,10 @@ jobs:
         if: github.event_name != 'pull_request'
         run: ./gradlew publishToMavenLocal
       - name: Perform Release
-        if: ${{ !contains(steps.set-version.outputs.version, 'SNAPSHOT') }}
+        if: ${{ !contains(steps.set-version.outputs.version, 'SNAPSHOT') && github.event_name != 'pull_request' }}
         run: echo "Releasing version ${{ steps.set-version.outputs.version }}"
       - name: Perform Release
-        if: ${{ !contains(steps.set-version.outputs.version, 'SNAPSHOT') }}
+        if: ${{ !contains(steps.set-version.outputs.version, 'SNAPSHOT') && github.event_name != 'pull_request' }}
         env:
           GIT_USER: ${{ secrets.GIT_USER }}
           GIT_PASSWORD: ${{ secrets.GIT_PASSWORD }}
@@ -53,7 +53,7 @@ jobs:
           git commit -m "Incrementing to next SNAPSHOT patch version"
           git push --follow-tags
       - name: Create Github Release
-        if: ${{ !contains(steps.set-version.outputs.version, 'SNAPSHOT') }}
+        if: ${{ !contains(steps.set-version.outputs.version, 'SNAPSHOT') && github.event_name != 'pull_request' }}
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ github.token }}
