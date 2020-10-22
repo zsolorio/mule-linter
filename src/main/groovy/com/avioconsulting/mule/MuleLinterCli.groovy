@@ -15,6 +15,7 @@ class MuleLinterCli implements Runnable {
         new CommandLine(new MuleLinterCli()).execute(args)
     }
 
+
     @Override
     void run() {
         MuleLinter ml = new MuleLinter(appDir, ruleConfiguration)
