@@ -46,14 +46,7 @@ publishing {
                 username = System.getenv("MVN_USER") != null ? System.getenv("MVN_USER") : ''
                 password = System.getenv("MVN_PASSWORD") != null ? System.getenv("MVN_PASSWORD") : ''
             }
-            def repo = "https://devops.avioconsulting.com/nexus/repository/avio-"
-            def versionProperty = 'version.semver'
-            def versionFile = 'version.properties'
-            Properties props = new Properties()
-            props.load(new File(versionFile).newDataInputStream())
-            def currentVersion = props.getProperty(versionProperty)
-            println "Version ${currentVersion}"
-            url = currentVersion.contains('SNAPSHOT') ? "${repo}snapshots" : "${repo}releases"
+            url = 'https://maven.pkg.github.com/avioconsulting/public-packages'
         }
     }
 }

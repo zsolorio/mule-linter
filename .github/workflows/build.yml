@@ -3,11 +3,11 @@ name: Java CI
 on:
   push:
     branches:
-      - develop
+      - 'develop'
       - 'feature/**'
   pull_request:
     branches:
-      - develop
+      - 'develop'
 
 jobs:
   build:
@@ -34,7 +34,10 @@ jobs:
 #        run: ./gradlew test
       - name: Publish Artifact
         if: github.event_name != 'pull_request'
-        run: ./gradlew publishToMavenLocal
+        env:
+          MVN_USER: ${{ secrets.GIT_USER }}
+          MVN_PASSWORD: ${{ secrets.GIT_PASSWORD }}
+        run: ./gradlew publish
       - name: Perform Release
         if: ${{ !contains(steps.set-version.outputs.version, 'SNAPSHOT') && github.event_name != 'pull_request' }}
         run: echo "Releasing version ${{ steps.set-version.outputs.version }}"
@@ -60,9 +63,6 @@ jobs:
         with:
           tag_name: v${{ steps.set-version.outputs.version }}
           release_name: Release v${{ steps.set-version.outputs.version }}
-          body: |
-            Changes in this Release
-            - First Change
-            - Second Change
+          body: ''
           draft: false
           prerelease: false
