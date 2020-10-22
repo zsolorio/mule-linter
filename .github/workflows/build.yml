@@ -37,7 +37,10 @@ jobs:
         env:
           MVN_USER: ${{ secrets.GIT_USER }}
           MVN_PASSWORD: ${{ secrets.GIT_PASSWORD }}
-        run: ./gradlew publish
+        run: |
+          echo "$MVN_USER"
+          echo "$MVN_PASSWORD"
+          ./gradlew publish
       - name: Perform Release
         if: ${{ !contains(steps.set-version.outputs.version, 'SNAPSHOT') && github.event_name != 'pull_request' }}
         run: echo "Releasing version ${{ steps.set-version.outputs.version }}"
